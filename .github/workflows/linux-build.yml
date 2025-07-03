@@ -38,7 +38,7 @@ env:
 
 jobs:
   build-linux64:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
@@ -142,7 +142,7 @@ jobs:
           ./aws_sdk_*.log
 
   build-linux64-debug:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
@@ -217,7 +217,7 @@ jobs:
 
     - name: upload-unit-test-file
       if: always() && (steps.rununittests.outcome == 'failure')
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4s
       with:
         name: odbc-unit-test-results-linux-debug
         path: |
