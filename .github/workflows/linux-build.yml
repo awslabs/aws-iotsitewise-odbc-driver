@@ -3,7 +3,8 @@ name: ODBC Driver for Linux
 on:
   push:
     branches:
-      - main
+      - '**'
+      - '!main'
   pull_request:
     branches:
       - main

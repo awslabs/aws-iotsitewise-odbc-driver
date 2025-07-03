@@ -3,7 +3,8 @@ name: ODBC Driver for Mac
 on:
   push:
     branches:
-      - main
+      - '**'
+      - '!main'
   pull_request:
     branches:
       - main
