@@ -1,0 +1,1 @@
+AWS IoT SiteWise ODBC Driver is a read-only ODBC driver for connecting to AWS IoT SiteWise.
