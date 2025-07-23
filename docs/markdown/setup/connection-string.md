@@ -129,7 +129,7 @@ Driver={Amazon IoT SiteWise ODBC Driver};Auth=IAM;AccessKeyId=myAccessKeyId;secr
 #### Connecting With Profile
 
 ```
-Driver={Amazon IoT SiteWise ODBC Driver};ProfileName=myProfileName;region=us-east-1;
+Driver={Amazon IoT SiteWise ODBC Driver};ProfileName=myProfileName;Region=us-east-1;
 ```
 
 #### Notes
@@ -141,7 +141,7 @@ Driver={Amazon IoT SiteWise ODBC Driver};ProfileName=myProfileName;region=us-eas
 #### Connecting with Okta
 
 ```
-driver={Amazon IoT SiteWise ODBC Driver};auth=okta;region=us-east-1;idPHost=myHostAtOkta;idPUsername=myUserName;idPPassword=myPassword;OktaApplicationID=myOktaAppId;roleARN=myRoleArn;idPARN=myIdpArn;
+Driver={Amazon IoT SiteWise ODBC Driver};Auth=okta;region=us-east-1;idPHost=myHostAtOkta;idPUsername=myUserName;idPPassword=myPassword;OktaApplicationID=myOktaAppId;RoleARN=myRoleArn;idPARN=myIdpArn;
 ```
 
 #### Notes
@@ -157,7 +157,7 @@ driver={Amazon IoT SiteWise ODBC Driver};auth=okta;region=us-east-1;idPHost=myHo
 #### Connecting with AAD
 
 ```
-driver={Amazon IoT SiteWise ODBC Driver};auth=aad;region=us-east-1;idPUsername=myUserName;idPPassword=myPassword;aadApplicationID=myAadAppId;aadClientSecret=myAadClientSecret;aadTenant=myAadTenant;roleARN=myRoleArn;idPARN=myIdpArn;
+Driver={Amazon IoT SiteWise ODBC Driver};Auth=aad;Region=us-east-1;idPUsername=myUserName;idPPassword=myPassword;aadApplicationID=myAadAppId;aadClientSecret=myAadClientSecret;aadTenant=myAadTenant;RoleARN=myRoleArn;idPARN=myIdpArn;
 ```
 
 #### Notes
@@ -174,7 +174,7 @@ driver={Amazon IoT SiteWise ODBC Driver};auth=aad;region=us-east-1;idPUsername=m
 #### Connecting With Specified Endpoint with Log Level Warning
 
 ```
-Driver={Amazon IoT SiteWise ODBC Driver};Auth=IAM;AccessKeyId=myAccessKeyId;secretKey=mySecretKey;EndpointOverride=us.east.1.iotsitewise.amazonaws.com;Region=us-east-2;LogLevel=2;
+Driver={Amazon IoT SiteWise ODBC Driver};Auth=IAM;AccessKeyId=myAccessKeyId;secretKey=mySecretKey;EndpointOverride=us.east.1.iotsitewise.amazonaws.com;Region=us-east-1;LogLevel=2;
 ```
 
 #### Notes

@@ -23,9 +23,9 @@ You need to do the following:
 
 ### IoTSiteWise ODBC Driver Download
 
-Download the IoT SiteWise ODBC driver [here](https://github.com/awslabs/amazon-iotsitewise-odbc-driver/releases). Choose
+Download the IoT SiteWise ODBC driver [here](https://github.com/awslabs/aws-iotsitewise-odbc-driver/releases). Choose
 the proper installer
-(e.g., `iotsitewise-odbc-installer-amd64-2.0.0.exe`).
+(e.g., `iotsitewise-odbc-installer-x64-2.0.0.exe`).
 
 ### IoTSiteWise ODBC Driver Installation
 

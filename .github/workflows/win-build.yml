@@ -1,9 +1,9 @@
 name: ODBC Driver for Windows
 
-on:
-  push:
-    branches:
-      - '**'
+on: workflow_dispatch
+#  push:
+#    branches:
+#      - '**'
 
 env:
   SIGNING_ENABLED: "true"
