@@ -509,16 +509,18 @@ SqlResult::Type TableMetadataQuery::getMatchedTables(
   LOG_DEBUG_MSG("getMatchedTables is called");
   std::string sql;
 
-  // If pattern is "%" (get all tables), use a simpler query
+  // Always use system.tables for table discovery to avoid column mixing
   if (tablePattern == "%" || tablePattern.empty()) {
     sql = "SELECT table_name FROM system.tables";
   } else {
-    std::string tablePatternLowercase;
-    tablePatternLowercase.resize(tablePattern.size());
-    std::transform(tablePattern.begin(), tablePattern.end(),
-      tablePatternLowercase.begin(), ::tolower);
-    sql = "SELECT table_name, column_name, data_type FROM system.columns WHERE table_name LIKE '%"
-      + tablePatternLowercase + "%'";
+    // If the pattern doesn't contain wildcards, treat it as an exact match
+    if (tablePattern.find('%') == std::string::npos && tablePattern.find('_') == std::string::npos) {
+      // For exact table name matching, use equality to avoid partial matches
+      sql = "SELECT table_name FROM system.tables WHERE table_name = '" + tablePattern + "'";
+    } else {
+      // Use the pattern as-is for LIKE matching
+      sql = "SELECT table_name FROM system.tables WHERE table_name LIKE '" + tablePattern + "'";
+    }
   }
   LOG_DEBUG_MSG("sql is " << sql);
 
@@ -546,9 +548,29 @@ SqlResult::Type TableMetadataQuery::getMatchedTables(
                             nullptr);
   columnBindings[1] = buf;
 
+  // For case-insensitive matching when pattern contains wildcards
+  std::string tablePatternLower = tablePattern;
+  std::transform(tablePatternLower.begin(), tablePatternLower.end(), 
+                 tablePatternLower.begin(), ::tolower);
+
   while (dataQuery_->FetchNextRow(columnBindings) == SqlResult::AI_SUCCESS) {
-    tableNames.emplace_back(tableName);
-    LOG_DEBUG_MSG("tableName: " << tableName);
+    std::string currentTableName(tableName);
+    
+    // If we're doing exact matching (no wildcards), do case-insensitive comparison
+    if (tablePattern.find('%') == std::string::npos && tablePattern.find('_') == std::string::npos) {
+      std::string currentTableNameLower = currentTableName;
+      std::transform(currentTableNameLower.begin(), currentTableNameLower.end(), 
+                     currentTableNameLower.begin(), ::tolower);
+      
+      if (currentTableNameLower == tablePatternLower) {
+        tableNames.emplace_back(currentTableName);
+        LOG_DEBUG_MSG("tableName: " << currentTableName);
+      }
+    } else {
+      // For wildcard patterns, add all results (SQL LIKE already handled the pattern)
+      tableNames.emplace_back(currentTableName);
+      LOG_DEBUG_MSG("tableName: " << currentTableName);
+    }
   }
 
   return SqlResult::AI_SUCCESS;
