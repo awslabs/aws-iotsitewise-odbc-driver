@@ -25,6 +25,7 @@
 #include "ignite/odbc/odbc_error.h"
 
 #include <aws/iotsitewise/model/ColumnType.h>
+#include <regex>
 
 namespace iotsitewise {
 namespace odbc {
@@ -323,12 +324,36 @@ SqlResult::Type DataQuery::NextResultSet() {
   return SqlResult::AI_NO_DATA;
 }
 
+std::string DataQuery::PreprocessSql(const std::string& originalSql) {
+  LOG_DEBUG_MSG("PreprocessSql is called");
+  
+  std::string processedSql = originalSql;
+  
+  // Remove empty database qualifiers like "".table_name or ""."schema"."table"
+  // This handles the case where Excel/PowerBI generates queries with empty catalog names
+  std::regex emptyDbPattern(R"(""\.)");
+  processedSql = std::regex_replace(processedSql, emptyDbPattern, "");
+  
+  // Also handle cases where there might be spaces around the empty qualifier
+  // Use a more precise pattern that preserves spacing after the dot
+  std::regex emptyDbPatternWithSpaces(R"(\s*""\s*\.\s*)");
+  processedSql = std::regex_replace(processedSql, emptyDbPatternWithSpaces, " ");
+  
+  return processedSql;
+}
+
 SqlResult::Type DataQuery::MakeRequestExecute() {
   // This function is called by Execute() and does the actual querying
   LOG_DEBUG_MSG("MakeRequestExecute is called");
 
-  LOG_INFO_MSG("sql query: " << sql_);
-  request_.SetQueryStatement(sql_);
+  // Preprocess SQL to remove empty database qualifiers
+  std::string processedSql = PreprocessSql(sql_);
+  LOG_INFO_MSG("original sql query: " << sql_);
+  if (processedSql != sql_) {
+    LOG_INFO_MSG("processed sql query: " << processedSql);
+  }
+  
+  request_.SetQueryStatement(processedSql);
   if (connection_.GetConfiguration().IsMaxRowPerPageSet()) {
     LOG_DEBUG_MSG("MaxRowPerPage is set to "
                   << connection_.GetConfiguration().GetMaxRowPerPage());
