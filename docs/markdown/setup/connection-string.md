@@ -174,13 +174,13 @@ Driver={Amazon IoT SiteWise ODBC Driver};Auth=aad;Region=us-east-1;idPUsername=m
 #### Connecting With Specified Endpoint with Log Level Warning
 
 ```
-Driver={Amazon IoT SiteWise ODBC Driver};Auth=IAM;AccessKeyId=myAccessKeyId;secretKey=mySecretKey;EndpointOverride=us.east.1.iotsitewise.amazonaws.com;Region=us-east-1;LogLevel=2;
+Driver={Amazon IoT SiteWise ODBC Driver};Auth=IAM;AccessKeyId=myAccessKeyId;secretKey=mySecretKey;EndpointOverride=https://iotsitewise.us-east-1.amazonaws.com;Region=us-east-1;LogLevel=2;
 ```
 
 #### Notes
 
 1. Authentication type (Auth) is AWS IAM credentials.
-2. Endpoint is `us.east.1.iotsitewise.amazonaws.com`.
+2. Endpoint is `https://iotsitewise.us-east-1.amazonaws.com`.
 3. Region is `us-east-1`.
 4. Log lever is set to 2 which is `Warning`.
 

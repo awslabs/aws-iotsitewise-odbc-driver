@@ -37,9 +37,7 @@ Windows ODBC Data Source Administrator.
 
    Once you are done, click `Connect`.
 
-6. You're now successfully connected on Excel and will see the possible tables that you can query from. Note that the
-   Preview function doesn't work as
-   we are limited by Excel's behavior.
+6. You're now successfully connected on Excel and will see the possible tables that you can query from.
 
 ![Excel Navigator](../images/windows-excel-navigator-page.png)
 
@@ -48,6 +46,14 @@ Windows ODBC Data Source Administrator.
 ![Excel Advanced Options](../images/windows-excel-query-advanced-option.png)
 
 ## Trouble-shooting Guide
+
+I am experience data-loading issues with Excel preview where the displayed preview data is not updated.
+
+Excel caches preview data, so if there's any changes to the data shape or data itself, the preview may
+not properly reflect the updates. To update the preview, click on the refresh button on the top right of
+the preview page:
+
+![Excel Refresh Preview](../images/windows-excel-refresh-preview.png)
 
 I am experiencing data-loading issues with Excel after version update or updating environment variable [
 `DATABASE_AS_SCHEMA`](developer-guide.md#database-reporting). For example, Excel is not prefixing the database name to

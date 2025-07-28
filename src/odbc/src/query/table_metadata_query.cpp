@@ -517,7 +517,7 @@ SqlResult::Type TableMetadataQuery::getMatchedTables(
     tablePatternLowercase.resize(tablePattern.size());
     std::transform(tablePattern.begin(), tablePattern.end(),
       tablePatternLowercase.begin(), ::tolower);
-    sql = "SELECT column_name FROM system.columns WHERE table_name LIKE \'" + tablePatternLowercase + "\'";
+    sql = "SELECT table_name FROM system.tables WHERE table_name LIKE \'" + tablePatternLowercase + "\'";
   }
   LOG_DEBUG_MSG("sql is " << sql);
 
