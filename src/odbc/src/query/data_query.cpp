@@ -327,19 +327,41 @@ SqlResult::Type DataQuery::NextResultSet() {
 std::string DataQuery::PreprocessSql(const std::string& originalSql) {
   LOG_DEBUG_MSG("PreprocessSql is called");
   
-  std::string processedSql = originalSql;
+  std::string result;
+  bool inDoubleQuotes = false;
+  bool inSingleQuotes = false;
+  size_t i = 0;
   
-  // Remove empty database qualifiers like "".table_name or ""."schema"."table"
-  // This handles the case where Excel/PowerBI generates queries with empty catalog names
-  std::regex emptyDbPattern(R"(""\.)");
-  processedSql = std::regex_replace(processedSql, emptyDbPattern, "");
+  // Parse the SQL character by character to handle quotes correctly
+  while (i < originalSql.length()) {
+    char currentChar = originalSql[i];
+
+    // Handle quote state changes
+    if (currentChar == '"' && !inSingleQuotes) {
+      inDoubleQuotes = !inDoubleQuotes;
+      result += currentChar;
+    }
+    else if (currentChar == '\'' && !inDoubleQuotes) {
+      inSingleQuotes = !inSingleQuotes;
+      result += currentChar;
+    }
+    // Check for "". pattern when not between quotes
+    else if (!inDoubleQuotes && !inSingleQuotes &&
+             i + 3 <= originalSql.length() &&
+             originalSql.substr(i, 3) == "\"\".") {
+      // Skip the empty qualifier and the dot
+      i += 3;  // Skip "".
+    }
+    else {
+      result += currentChar;
+    }
+    i++;
+  }
   
-  // Also handle cases where there might be spaces around the empty qualifier
-  // Use a more precise pattern that preserves spacing after the dot
-  std::regex emptyDbPatternWithSpaces(R"(\s*""\s*\.\s*)");
-  processedSql = std::regex_replace(processedSql, emptyDbPatternWithSpaces, " ");
-  
-  return processedSql;
+  LOG_DEBUG_MSG("Original SQL: " << originalSql);
+  LOG_DEBUG_MSG("Processed SQL: " << result);
+
+  return result;
 }
 
 SqlResult::Type DataQuery::MakeRequestExecute() {
