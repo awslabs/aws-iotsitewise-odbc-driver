@@ -560,7 +560,7 @@ SqlResult::Type ColumnMetadataQuery::MakeRequestGetColumnsMetaPerTable(
   LOG_DEBUG_MSG(
       "MakeRequestGetColumnsMetaPerTable is called with tableName: "
       << tableName);
-  std::string sql = "SELECT column_name FROM system.columns ";
+  std::string sql = "SELECT column_name, data_type FROM system.columns ";
   sql += "WHERE table_name = \'" + tableName + "\'";
   LOG_DEBUG_MSG("sql is " << sql);
 
