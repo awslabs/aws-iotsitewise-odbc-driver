@@ -327,30 +327,28 @@ SqlResult::Type DataQuery::NextResultSet() {
 std::string DataQuery::PreprocessSql(const std::string& originalSql) {
   LOG_DEBUG_MSG("PreprocessSql is called");
   
-  std::string result;
-  bool inDoubleQuotes = false;
-  bool inSingleQuotes = false;
-  size_t i = 0;
-
-  // Parse the SQL character by character to handle quotes correctly
-  while (i < originalSql.length()) {
-    char currentChar = originalSql[i];
-
-    if (!inDoubleQuotes && !inSingleQuotes &&
-                 i + 3 <= originalSql.length() &&
-                 originalSql.substr(i, 3) == "\"\".") {
-          i += 3;
-          continue;
-    } else if (currentChar == '"' && !inSingleQuotes) {
-      inDoubleQuotes = !inDoubleQuotes;
-      result += currentChar;
-    } else if (currentChar == '\'' && !inDoubleQuotes) {
-      inSingleQuotes = !inSingleQuotes;
-      result += currentChar;
-    } else {
-      result += currentChar;
+  std::string result = originalSql;
+  
+  // Replace specific quoted patterns
+  std::vector<std::pair<std::string, std::string>> replacements = {
+    {"\"\".\"asset\"", "asset"},
+    {"\"\".\"asset_property\"", "asset_property"},
+    {"\"\".\"latest_value_time_series\"", "latest_value_time_series"},
+    {"\"\".\"precomputed_aggregates\"", "precomputed_aggregates"},
+    {"\"\".\"raw_time_series\"", "raw_time_series"},
+    {"\"\".", ""}  // Replace empty database qualifiers with empty space
+  };
+  
+  // Apply all replacements
+  for (const auto& replacement : replacements) {
+    const std::string& pattern = replacement.first;
+    const std::string& replacement_text = replacement.second;
+    
+    size_t pos = 0;
+    while ((pos = result.find(pattern, pos)) != std::string::npos) {
+      result.replace(pos, pattern.length(), replacement_text);
+      pos += replacement_text.length();
     }
-    i++;
   }
 
   LOG_DEBUG_MSG("Original SQL: " << originalSql);
