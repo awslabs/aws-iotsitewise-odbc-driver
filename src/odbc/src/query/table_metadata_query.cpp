@@ -467,8 +467,13 @@ SqlResult::Type TableMetadataQuery::getTables() {
           meta.back().SetTableName(foundTableName);
           meta.back().SetTableType("TABLE");
           // Explicitly set catalog, schema, and remarks to NULL for Excel compatibility
-          meta.back().SetCatalogNameNull();
-          meta.back().SetSchemaNameNull();
+          if (DATABASE_AS_SCHEMA) {
+            meta.back().SetCatalogNameNull();
+            meta.back().SetSchemaName("default");
+          } else {
+            meta.back().SetCatalogName("default");
+            meta.back().SetSchemaNameNull();
+          }
           meta.back().SetRemarksNull();
           LOG_DEBUG_MSG("getTables: Found matched table for " << table.get());
         }
@@ -476,9 +481,13 @@ SqlResult::Type TableMetadataQuery::getTables() {
           meta.emplace_back(TableMeta());
           meta.back().SetTableName(tableNames.at(j));
           meta.back().SetTableType("TABLE");
-          // Explicitly set catalog, schema, and remarks to NULL for Excel compatibility
-          meta.back().SetCatalogNameNull();
-          meta.back().SetSchemaNameNull();
+          if (DATABASE_AS_SCHEMA) {
+            meta.back().SetCatalogNameNull();
+            meta.back().SetSchemaName("default");
+          } else {
+            meta.back().SetCatalogName("default");
+            meta.back().SetSchemaNameNull();
+          }
           meta.back().SetRemarksNull();
           LOG_DEBUG_MSG("getTables: Added table " << tableNames.at(j) << " to meta");
       } else {

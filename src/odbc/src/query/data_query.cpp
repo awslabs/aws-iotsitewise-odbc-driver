@@ -324,47 +324,11 @@ SqlResult::Type DataQuery::NextResultSet() {
   return SqlResult::AI_NO_DATA;
 }
 
-std::string DataQuery::PreprocessSql(const std::string& originalSql) {
-  LOG_DEBUG_MSG("PreprocessSql is called");
-  
-  std::string result = originalSql;
-  
-  // Replace specific quoted patterns
-  std::vector<std::pair<std::string, std::string>> replacements = {
-    {"\"\".\"asset\"", "asset"},
-    {"\"\".\"asset_property\"", "asset_property"},
-    {"\"\".\"latest_value_time_series\"", "latest_value_time_series"},
-    {"\"\".\"precomputed_aggregates\"", "precomputed_aggregates"},
-    {"\"\".\"raw_time_series\"", "raw_time_series"},
-    {"\"\".", ""}  // Replace empty database qualifiers with empty space
-  };
-  
-  // Apply all replacements
-  for (const auto& replacement : replacements) {
-    const std::string& pattern = replacement.first;
-    const std::string& replacement_text = replacement.second;
-    
-    size_t pos = 0;
-    while ((pos = result.find(pattern, pos)) != std::string::npos) {
-      result.replace(pos, pattern.length(), replacement_text);
-      pos += replacement_text.length();
-    }
-  }
-
-  LOG_DEBUG_MSG("Original SQL: " << originalSql);
-  LOG_DEBUG_MSG("Processed SQL: " << result);
-
-  return result;
-}
-
 SqlResult::Type DataQuery::MakeRequestExecute() {
   // This function is called by Execute() and does the actual querying
   LOG_DEBUG_MSG("MakeRequestExecute is called");
 
-  // Preprocess SQL to remove empty database qualifiers
-  std::string processedSql = PreprocessSql(sql_);
-
-  request_.SetQueryStatement(processedSql);
+  request_.SetQueryStatement(sql_);
   if (connection_.GetConfiguration().IsMaxRowPerPageSet()) {
     LOG_DEBUG_MSG("MaxRowPerPage is set to "
                   << connection_.GetConfiguration().GetMaxRowPerPage());
