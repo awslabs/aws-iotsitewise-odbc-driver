@@ -327,7 +327,7 @@ SqlResult::Type DataQuery::MakeRequestExecute() {
   // This function is called by Execute() and does the actual querying
   LOG_DEBUG_MSG("MakeRequestExecute is called");
 
-  LOG_INFO_MSG("sql query: " << sql_);
+  LOG_INFO_MSG("sql query: " <<sql_);
   request_.SetQueryStatement(sql_);
   if (connection_.GetConfiguration().IsMaxRowPerPageSet()) {
     LOG_DEBUG_MSG("MaxRowPerPage is set to "

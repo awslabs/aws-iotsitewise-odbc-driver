@@ -467,8 +467,13 @@ SqlResult::Type TableMetadataQuery::getTables() {
           meta.back().SetTableName(foundTableName);
           meta.back().SetTableType("TABLE");
           // Explicitly set catalog, schema, and remarks to NULL for Excel compatibility
-          meta.back().SetCatalogNameNull();
-          meta.back().SetSchemaNameNull();
+          if (DATABASE_AS_SCHEMA) {
+            meta.back().SetCatalogNameNull();
+            meta.back().SetSchemaName("default");
+          } else {
+            meta.back().SetCatalogName("default");
+            meta.back().SetSchemaNameNull();
+          }
           meta.back().SetRemarksNull();
           LOG_DEBUG_MSG("getTables: Found matched table for " << table.get());
         }
@@ -476,9 +481,13 @@ SqlResult::Type TableMetadataQuery::getTables() {
           meta.emplace_back(TableMeta());
           meta.back().SetTableName(tableNames.at(j));
           meta.back().SetTableType("TABLE");
-          // Explicitly set catalog, schema, and remarks to NULL for Excel compatibility
-          meta.back().SetCatalogNameNull();
-          meta.back().SetSchemaNameNull();
+          if (DATABASE_AS_SCHEMA) {
+            meta.back().SetCatalogNameNull();
+            meta.back().SetSchemaName("default");
+          } else {
+            meta.back().SetCatalogName("default");
+            meta.back().SetSchemaNameNull();
+          }
           meta.back().SetRemarksNull();
           LOG_DEBUG_MSG("getTables: Added table " << tableNames.at(j) << " to meta");
       } else {
@@ -517,8 +526,7 @@ SqlResult::Type TableMetadataQuery::getMatchedTables(
     tablePatternLowercase.resize(tablePattern.size());
     std::transform(tablePattern.begin(), tablePattern.end(),
       tablePatternLowercase.begin(), ::tolower);
-    sql = "SELECT table_name, column_name, data_type FROM system.columns WHERE table_name LIKE '%"
-      + tablePatternLowercase + "%'";
+    sql = "SELECT table_name FROM system.tables WHERE table_name LIKE \'" + tablePatternLowercase + "\'";
   }
   LOG_DEBUG_MSG("sql is " << sql);
 

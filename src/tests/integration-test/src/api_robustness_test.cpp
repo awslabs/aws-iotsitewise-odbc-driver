@@ -1331,4 +1331,34 @@ BOOST_AUTO_TEST_CASE(TestRowArraySizeGreaterThanOne) {
   BOOST_CHECK_EQUAL(0.0, fieldDouble[2]);
 }
 
+BOOST_AUTO_TEST_CASE(TestSQLDriverRemoveEmptyDatabase) {
+  // There are no checks because we do not really care what is the result of
+  // these calls as long as they do not cause segmentation fault.
+  ConnectToSW();
+
+  std::vector< SQLWCHAR > sql = MakeSqlBuffer("SELECT \"asset_id\" FROM \"default\".\"asset\"");
+
+  // Everything is ok.
+  SQLRETURN ret = SQLExecDirect(stmt, sql.data(), SQL_NTS);
+
+  ODBC_FAIL_ON_ERROR(ret, SQL_HANDLE_STMT, stmt);
+
+  SQLCloseCursor(stmt);
+
+  // Value length is null.
+  SQLExecDirect(stmt, sql.data(), 0);
+
+  SQLCloseCursor(stmt);
+
+  // Value is null.
+  SQLExecDirect(stmt, 0, SQL_NTS);
+
+  SQLCloseCursor(stmt);
+
+  // All nulls.
+  SQLExecDirect(stmt, 0, 0);
+
+  SQLCloseCursor(stmt);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
