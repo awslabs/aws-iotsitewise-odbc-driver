@@ -1,7 +1,7 @@
 # Windows - Configuring a DSN
 
 1. Open ODBC Driver Data Source Administrator (choose the proper bitness: 32 or 64)
-    ![ODBC Driver Data Source Administrator](../images/odbc-data-source-admin.png)
+    ![ODBC Driver Data Source Administrator](../images/odbc_data_source_admin.png)
 2. Click `Add` to add a new DSN.
 3. Choose Amazon IoT SiteWise ODBC Driver.
 4. Fill the Windows Form properly. For information on how to fill the properties, see [Connection String Properties](connection-string.md). 
