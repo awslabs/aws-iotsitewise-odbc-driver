@@ -37,7 +37,7 @@
 
 | Option             | Description                                                                                                                                                                      | Default     |
 |--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-| `EndpointOverride` | The endpoint override for the IoT SiteWise service. It overrides the region. It is an advanced option. <br /> Example value: <br />  https://us-east-1.iotsitewise.amazonaws.com | `NONE`      
+| `EndpointOverride` | The endpoint override for the IoT SiteWise service. It overrides the region. It is an advanced option. <br /> Example value: <br />  https://iotsitewise.us-east-1.amazonaws.com | `NONE`      
 | `Region`           | The signing region for the IoT SiteWise service endpoint.                                                                                                                        | `us-east-1` 
 
 ### Credentials Provider Options
@@ -48,11 +48,11 @@
 
 ### AWS IAM Authentication Options
 
-| Option                 | Description                                                                                                                                         | Default |
-|------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| `UID` or `AccessKeyId` | The AWS user access key id. If both `UID` and `AccessKeyId` are provided in the connection string, the non-empty value with `UID` will be used.     | `NONE`  
-| `PWD` or `SecretKey`   | The AWS user secret access key. If both `PWD` and `SecretKey` are provided in the connection string, the non-empty value with `PWD` will be used.   | `NONE`  
-| `SessionToken`         | The temporary session token required to access a database with multi-factor authentication (MFA) enabled. Do not include trailing "=" in the input. | `NONE`  
+| Option                 | Description                                                                                                                                                                                                                                             | Default |
+|------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `UID` or `AccessKeyId` | The AWS user access key id. If both `UID` and `AccessKeyId` are provided in the connection string, the non-empty value with `UID` will be used.                                                                                                         | `NONE`  
+| `PWD` or `SecretKey`   | The AWS user secret access key. If both `PWD` and `SecretKey` are provided in the connection string, the non-empty value with `PWD` will be used.                                                                                                       | `NONE`  
+| `SessionToken`         | The temporary session token required to access a database with multi-factor authentication (MFA) enabled. If unable to connect after confirming the correct authentication has been entered, try again without including the trailing "=" in the input. | `NONE`  
 
 ### SAML-Based Authentication Options for Okta
 
@@ -203,7 +203,7 @@ The following are the screenshots of the Windows ODBC driver UI.
 
 ![Design Screenshot 3](../images/windows-dsn-configuration-window-design-3.PNG)
 
-![Design Screenshot 4](../images/windows-dsn-configuration-window-design-4.PNG)
+![Design Screenshot 4](../images/windows-dsn-configuration-window-design-4.png)
 
 ![Design Screenshot 5](../images/windows-dsn-configuration-window-design-5.PNG)
 
